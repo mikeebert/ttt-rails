@@ -1,0 +1,26 @@
+body {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 48px;
+}
+
+#board{	
+	margin: 10px auto;
+}
+
+#board table {
+	margin: 10px auto;
+}
+td {
+  width: 75px;
+  height: 75px;
+  text-align: center;
+}
+
+#middle_column {
+	border-left: 1px solid #333;
+	border-right: 1px solid #333;
+}
+#middle_row td{
+	border-bottom: 1px solid #333;
+	border-top: 1px solid #333;
+}

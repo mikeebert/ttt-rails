@@ -1,0 +1,23 @@
+<div id="board">
+	<table>
+		<tr>
+			<td><%= cell_value(0,0) %></td>
+			<td id="middle_column"><%=cell_value(0,1) %></td>
+			<td><%= cell_value(0,2) %></td>
+		</tr>
+		<tr id="middle_row">
+			<td><%= cell_value(1,0) %></td>
+			<td id="middle_column"><%= cell_value(1,1) %></td>
+			<td><%= cell_value(1,2) %></td>
+		</tr>
+		<tr>
+			<td><%= cell_value(2,0) %></td>
+			<td id="middle_column"><%= cell_value(2,1) %></td>
+			<td><%= cell_value(2,2) %></td>
+		</tr>	
+	</table>
+</div>
+
+<div align="center">
+  <%= button_to "Start New Game", games_url, method: :create %>
+</div>
