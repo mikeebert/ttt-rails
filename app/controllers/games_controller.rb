@@ -23,7 +23,7 @@ class GamesController < ApplicationController
     @game.player_move(params[:y].to_i,params[:x].to_i) # define in model depending on the play button they post
     @game.check_for_win("player")
     @game.computer_move
-    @game.check_for_win("computer")
+    # @game.check_for_win("computer") #need to rewrite this so that it knows who wins.
     if @game.winner.present?
       redirect_to games_url, notice: "#{@game.winner} WINS!"
     else

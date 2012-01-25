@@ -40,19 +40,20 @@ class Game < ActiveRecord::Base
   end
 
   def computer_move
-    # opening move
-    if self.grid[1][1] != ""
+    # opening move or possibly even the first two moves
+    if self.grid[1][1] != "" && self.grid[0][0] != "X"#need to add in something so that it doesn't replace a move.
       self.grid[0][0] = "O"
       self.save
     else
       self.grid[1][1] = "O"
       self.save
     end
+
     #defense
-    check_for_two_adjacent_or_diagonal_symbols
-    def check_for_two_adjacent_symbols
-      
-    end
+    # check_for_two_adjacent_or_diagonal_symbols
+    # def check_for_two_adjacent_symbols
+    #   
+    # end
   end
 
 end
