@@ -1,3 +1,5 @@
 To-Do:
 
+App helper set_game needs to be set to session[:game_id] for edit, changed for new
+
 Create a helper method for the board so that if the value of [y][x] is empty it displays a "play here" button, otherwise it displays the value.

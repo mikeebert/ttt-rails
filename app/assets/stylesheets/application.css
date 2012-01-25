@@ -3,6 +3,10 @@ body {
 	font-size: 48px;
 }
 
+#notice {
+  text-align:center;
+}
+
 #board{	
 	margin: 10px auto;
 }

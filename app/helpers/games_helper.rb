@@ -7,7 +7,9 @@ module GamesHelper
       @game.grid[y][x]
     end
   end
+  
 
+  
 end
 
 

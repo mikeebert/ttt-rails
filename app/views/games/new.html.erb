@@ -1,1 +1,26 @@
-<%= render :partial => 'board' %>
+New Game Board
+
+<div align="center">
+  <%= button_to "Start New Game", games_url, method: :create %>
+</div>
+
+<div id="board">
+	<table>
+		<tr>
+			<td><%= @game.grid[0][0] %></td>
+			<td id="middle_column"><%=@game.grid[0][1] %></td>
+			<td><%= @game.grid[0][2] %></td>
+		</tr>
+		<tr id="middle_row">
+			<td><%= @game.grid[1][0] %></td>
+			<td id="middle_column"><%= @game.grid[1][1] %></td>
+			<td><%= @game.grid[1][2] %></td>
+		</tr>
+		<tr>
+			<td><%= @game.grid[2][0] %></td>
+			<td id="middle_column"><%= @game.grid[2][1] %></td>
+			<td><%= @game.grid[2][2] %></td>
+		</tr>	
+	</table>
+</div>
+
