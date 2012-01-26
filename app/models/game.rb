@@ -51,6 +51,10 @@ class Game < ActiveRecord::Base
     end
     
     check_for_possible_win
+    
+    #need to add in to make move for for edge play
+      #could be final statement in elsif for defense?
+    
   end
 
   def check_for_possible_win
