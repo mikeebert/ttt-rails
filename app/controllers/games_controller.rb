@@ -20,14 +20,19 @@ class GamesController < ApplicationController
   end
 
   def update    
-    @game.player_move(params[:y].to_i,params[:x].to_i) # define in model depending on the play button they post
+    @game.player_move(params[:y].to_i,params[:x].to_i) 
     @game.check_for_win("player")
-    @game.computer_move
-    # @game.check_for_win("computer") #need to rewrite this so that it knows who wins.
+    
     if @game.winner.present?
-      redirect_to games_url, notice: "#{@game.winner} WINS!"
+      redirect_to edit_game_url(@game), notice: "#{@game.winner} WINS!"
     else
-      redirect_to edit_game_url(@game)
+      @game.computer_move
+      @game.check_for_win("computer")
+      if @game.winner.present?
+        redirect_to edit_game_url(@game), notice: "#{@game.winner} WINS!"
+      else
+        redirect_to edit_game_url(@game)
+      end
     end
   end
 

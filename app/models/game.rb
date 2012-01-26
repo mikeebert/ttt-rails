@@ -25,12 +25,13 @@ class Game < ActiveRecord::Base
         end
       end
     end              
-    #check for forward slash win
-    if grid[0][0] == grid[1][1] && grid[0][0] == grid[2][2]
-      if grid[0][0] != ""
-        self.winner = "#{competitor.upcase}"
-      end
-    end
+    # #check for forward slash win - WILL DELETE BECAUSE THE OPENING MOVE SHOULD ALWAYS PREVENT THIS
+    # if grid[0][0] == grid[1][1] && grid[0][0] == grid[2][2]
+    #   if grid[0][0] != ""
+    #     self.winner = "#{competitor.upcase}"
+    #   end
+    # end
+    
     #check for backslash win 
     if grid[0][2] == grid[1][1] && grid[0][2] == grid[2][0]
       if grid[0][2] != ""
@@ -40,20 +41,56 @@ class Game < ActiveRecord::Base
   end
 
   def computer_move
-    # opening move or possibly even the first two moves
-    if self.grid[1][1] != "" && self.grid[0][0] != "X"#need to add in something so that it doesn't replace a move.
-      self.grid[0][0] = "O"
+    #opening move or even the first two moves
+    if grid[1][1].present? && grid[0][0] != "X"
+      grid[0][0] = "O"
       self.save
     else
-      self.grid[1][1] = "O"
+      grid[1][1] = "O"
       self.save
     end
-
-    #defense
-    # check_for_two_adjacent_or_diagonal_symbols
-    # def check_for_two_adjacent_symbols
-    #   
-    # end
+    
+    check_for_possible_win
   end
 
+  def check_for_possible_win
+    values = 0,1,2
+     
+    #vertical
+    values.each do |x|
+      if grid[0][x] == grid[1][x] && grid[0][x] == "X"
+        grid[2][x] = "O" if grid[2][x].empty?
+      elsif grid[0][x] == grid[2][x] && grid[0][x] == "X"
+        grid[1][x] = "O"if grid[1][x].empty?
+      elsif grid[1][x] == grid[2][x] && grid[1][x] == "X"
+        grid[0][x] = "O"if grid[0][x].empty?
+      end
+      self.save
+    end
+    
+    #horizontal
+    values.each do |y|
+      if grid[y][0] == grid[y][1] && grid[y][0] == "X"
+        grid[y][2] = "O" if grid[y][2].empty?
+      elsif grid[y][0] == grid[y][2] && grid[y][0] == "X"
+        grid[y][1] = "O"if grid[y][1].empty?
+      elsif grid[y][1] == grid[y][2] && grid[y][1] == "X"
+        grid[y][0] = "O"if grid[y][0].empty?
+      end
+      self.save
+    end
+    
+    #backslash
+    if grid[0][2] == grid[1][1] && grid[0][2] == "X"
+      grid[2][0] = "O" if grid[2][0].empty?
+      self.save
+    elsif grid[0][2] == grid[2][0]
+      grid[1][1] = "O" if grid[1][1].empty?
+      self.save
+    elsif grid[2][0] == grid[1][1] && grid[2][0] == "X"
+      grid[0][2] = "O" if grid[0][2].empty?
+      self.save
+    end
+  end
+  
 end
