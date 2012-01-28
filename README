@@ -1,7 +1,18 @@
-To-Do:
+Notes:
 
+TicTacToe Game in Ruby & Rails made with the following guidelines:
+- Allow for a human player
+- Play against a human
+- Have some user interface, text is fine
+- Win whenever possible, and never lose
+
+If you have rails installed you can download it to your local machine, run rails server, and navigate to localhost:3000
+
+Notes:
 I KNOW there's a better way than all of the "if" statements and checking for action in the defensive/offensive moves. Looking forward to learning how.
 
 Should the computer actions/logic be placed in a module?
 
-I'd like to know why my routes were being so stubborn on the button_to.
+I'd like to know why my routes were being so stubborn on the button_to (hence resources plus the two named routes).
+
+So much refactoring to be done.
