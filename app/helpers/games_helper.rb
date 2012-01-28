@@ -13,8 +13,8 @@ module GamesHelper
       @game.grid[y][x]
     end
   end
-    
+  
+  
 end
 
 
-# <%= button_to('Destroy', 'http://www.example.com', :confirm => 'Are you sure?',:method => "delete", :remote => true, :disable_with => 'loading...')

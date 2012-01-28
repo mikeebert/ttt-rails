@@ -1,5 +1,7 @@
 To-Do:
 
-App helper set_game needs to be set to session[:game_id] for edit, changed for new
+I KNOW there's a better way than all of the "if" statements and checking for action in the defensive/offensive moves. Looking forward to learning how.
 
-Create a helper method for the board so that if the value of [y][x] is empty it displays a "play here" button, otherwise it displays the value.
+Should the computer actions/logic be placed in a module?
+
+I'd like to know why my routes were being so stubborn on the button_to.
