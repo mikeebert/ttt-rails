@@ -20,15 +20,21 @@ class Game < ActiveRecord::Base
   def computer_move
     
     if move_count == 3
-      #first check for diaganol setup  
+      #first check for diaganol setup 
       if grid[0][0] == "X" && grid[0][0] == grid[2][2]          
         self.grid[0][1] = "O"
       elsif grid[0][2] == "X" && grid[0][2] == grid[2][0]
         self.grid[0][1] = "O"
+      #then check for the "knight or L" setup
+      elsif grid[0][0] == "X" && grid[0][0] == grid[2][1]
+        self.grid[2][0] = "O"
+      elsif grid[1][2] == "X" && grid[1][2] == grid[2][0]
+        self.grid[2][2] = "O"
       else
         if defensive_move == 0
-          if grid[0][0] != "X"
+          if grid[0][0] != "X" && grid[0][0].empty? # changes the "knight" setup
             grid[0][0] = "O"
+            
           elsif grid[0][2].empty?
             grid[0][2] = "O"
           end
@@ -42,10 +48,11 @@ class Game < ActiveRecord::Base
     if move_count == 5
       offensive_move
       check_for_win_or_tie("computer")
-      if winner.nil?
+      if winner.nil?        
         if defensive_move == 0
           first_available_space_move
         else
+          # raise defensive_move.inspect
           defensive_move
         end
       end     
