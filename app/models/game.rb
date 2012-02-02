@@ -25,16 +25,15 @@ class Game < ActiveRecord::Base
         self.grid[0][1] = "O"
       elsif grid[0][2] == "X" && grid[0][2] == grid[2][0]
         self.grid[0][1] = "O"
-      #then check for the "knight or L" setup
+      #then check for 2 versions of the "knight or L" setup
       elsif grid[0][0] == "X" && grid[0][0] == grid[2][1]
         self.grid[2][0] = "O"
       elsif grid[1][2] == "X" && grid[1][2] == grid[2][0]
         self.grid[2][2] = "O"
       else
         if defensive_move == 0
-          if grid[0][0] != "X" && grid[0][0].empty? # changes the "knight" setup
+          if grid[0][0] != "X" && grid[0][0].empty? # covers the other 2 rotations of the "knight" setup
             grid[0][0] = "O"
-            
           elsif grid[0][2].empty?
             grid[0][2] = "O"
           end
@@ -52,7 +51,6 @@ class Game < ActiveRecord::Base
         if defensive_move == 0
           first_available_space_move
         else
-          # raise defensive_move.inspect
           defensive_move
         end
       end     
