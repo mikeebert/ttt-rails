@@ -3,26 +3,23 @@ class Game < ActiveRecord::Base
   serialize :grid
   before_create :new_game
     
+  def new_game
+    self.grid = [["","",""],["","",""],["","",""]]
+  end
+
   def player_move(y,x)
     grid[y][x] = "X"
     self.save
   end
     
   def computer_move
-    
     if move_count == 1
       first_computer_move
-    end
-        
-    if move_count == 3
+    elsif move_count == 3
       second_computer_move
-    end
-          
-    if move_count == 5
+    elsif move_count == 5
       third_computer_move
-    end
-    
-    if move_count == 7
+    elsif move_count == 7
       fourth_computer_move
     end  
   end
@@ -72,7 +69,8 @@ class Game < ActiveRecord::Base
         #protect against a knight setup
         elsif grid[0][2] == "X" && grid[2][1] == "X"
           grid[2][2] = "O"
-        elsif grid[0][0] != "X" && grid[0][0].empty? # covers the other 2 rotations of the "knight" setup, but a "dumb" move if player plays [0][1] & [2][2]
+        elsif grid[0][0] != "X" && grid[0][0].empty? 
+          # covers the other 2 rotations of the "knight" setup, but a "dumb" move if player plays [0][1] & [2][2]
           grid[0][0] = "O"
         elsif grid[0][2].empty?
           grid[0][2] = "O"
@@ -280,10 +278,6 @@ class Game < ActiveRecord::Base
         end
       end
     end
-  end
-  
-  def new_game
-    self.grid = [["","",""],["","",""],["","",""]]
   end
   
 end
