@@ -5,14 +5,9 @@ class GamesController < ApplicationController
   def index
   end
   
-  def new
-    new_game
-  end
-
   def create
-    new_game
-    @game.player_move(params[:y].to_i,params[:x].to_i)
-    @game.opening_computer_move
+    @game = Game.new
+    @game.save
     session[:game_id] = @game.id
     redirect_to edit_game_url(@game)
   end
@@ -37,12 +32,5 @@ class GamesController < ApplicationController
     end
     
   end
-
-  private
-  
-  def new_game
-    @game = Game.new(grid: [["","",""],["","",""],["","",""]])
-  end
-  
   
 end

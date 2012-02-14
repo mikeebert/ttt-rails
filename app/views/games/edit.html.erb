@@ -1,3 +1,7 @@
 <div id="title">Game in Session. You are playing X's</div>
 
 <%= render :partial => 'board' %>
+
+<div id="new_game_link">
+  <%= link_to "Start New Game", games_url, method: :post %>
+</div>

@@ -1,13 +1,49 @@
 class Game < ActiveRecord::Base
   
   serialize :grid
+  before_create :new_game
     
   def player_move(y,x)
     grid[y][x] = "X"
     self.save
   end
-
-  def opening_computer_move 
+    
+  def computer_move
+    
+    if move_count == 1
+      first_computer_move
+    end
+        
+    if move_count == 3
+      second_computer_move
+    end
+          
+    if move_count == 5
+      third_computer_move
+    end
+    
+    if move_count == 7
+      fourth_computer_move
+    end  
+  end
+  
+  def move_count
+    count = 0
+    self.grid.each do |y|
+      y.each do |x|
+        if x.present?
+          count += 1
+        end
+      end
+    end
+    
+    if count == 9 
+      self.winner = "Tie Game!"
+    end
+    return count
+  end
+  
+  def first_computer_move 
     if grid[1][1].present? && grid[0][0].empty?
       grid[0][0] = "O"
       self.save
@@ -15,64 +51,61 @@ class Game < ActiveRecord::Base
       grid[1][1] = "O" 
       self.save
     end
-  end
-    
-  def computer_move
-    
-    if move_count == 3
-      #first check for diaganol setup 
-      if grid[0][0] == "X" && grid[0][0] == grid[2][2]          
-        self.grid[0][1] = "O"
-      elsif grid[0][2] == "X" && grid[0][2] == grid[2][0]
-        self.grid[0][1] = "O"
-      #then check for 2 versions of the "knight or L" setup
-      elsif grid[0][0] == "X" && grid[0][0] == grid[2][1]
-        self.grid[2][0] = "O"
-      elsif grid[1][2] == "X" && grid[1][2] == grid[2][0]
-        self.grid[2][2] = "O"
+  end  
+  
+  def second_computer_move
+    #first check for diaganol setup 
+    if grid[0][0] == "X" && grid[0][0] == grid[2][2]          
+      self.grid[0][1] = "O"
+    elsif grid[0][2] == "X" && grid[0][2] == grid[2][0]
+      self.grid[0][1] = "O"
+    #then check for 2 versions of the "knight or L" setup
+    elsif grid[0][0] == "X" && grid[0][0] == grid[2][1]
+      self.grid[2][0] = "O"
+    elsif grid[1][2] == "X" && grid[1][2] == grid[2][0]
+      self.grid[2][2] = "O"
+    else
+      if defensive_move == 0
+        #protect against double egde setup
+        if grid[1][2] == "X" && grid[2][1] == "X" 
+          grid[2][2] = "O"
+        #protect against a knight setup
+        elsif grid[0][2] == "X" && grid[2][1] == "X"
+          grid[2][2] = "O"
+        elsif grid[0][0] != "X" && grid[0][0].empty? # covers the other 2 rotations of the "knight" setup, but a "dumb" move if player plays [0][1] & [2][2]
+          grid[0][0] = "O"
+        elsif grid[0][2].empty?
+          grid[0][2] = "O"
+        end
       else
-        if defensive_move == 0
-          #protect against double egde setup
-          if grid[1][2] == "X" && grid[2][1] == "X" 
-            grid[2][2] = "O"
-          #protect against a knight setup
-          elsif grid[0][2] == "X" && grid[2][1] == "X"
-            grid[2][2] = "O"
-          elsif grid[0][0] != "X" && grid[0][0].empty? # covers the other 2 rotations of the "knight" setup, but a "dumb" move if player plays [0][1] & [2][2]
-            grid[0][0] = "O"
-          elsif grid[0][2].empty?
-            grid[0][2] = "O"
-          end
-        else
-          defensive_move
-        end
+        defensive_move
       end
-      self.save
     end
-          
-    if move_count == 5
-      offensive_move
-      check_for_win_or_tie("computer")
-      if winner.nil?        
-        if defensive_move == 0
-          first_available_space_move
-        else
-          defensive_move
-        end
-      end     
-    end
-    
-    if move_count == 7
-      offensive_move
-      check_for_win_or_tie("computer")
-      if self.winner.nil?
-        if defensive_move == 0
-          first_available_space_move
-        else
-          defensive_move
-        end          
+    self.save
+  end
+  
+  def third_computer_move
+    offensive_move
+    check_for_win_or_tie("computer")
+    if winner.nil?        
+      if defensive_move == 0
+        first_available_space_move
+      else
+        defensive_move
       end
-    end  
+    end     
+  end
+  
+  def fourth_computer_move
+    offensive_move
+    check_for_win_or_tie("computer")
+    if self.winner.nil?
+      if defensive_move == 0
+        first_available_space_move
+      else
+        defensive_move
+      end          
+    end    
   end
   
   def check_for_win_or_tie(competitor)    
@@ -107,10 +140,8 @@ class Game < ActiveRecord::Base
         self.winner = "#{competitor.upcase} WINS!"
         self.save
       end
-    end
-    
-    move_count
-    
+    end    
+    move_count    
   end
   
   def offensive_move
@@ -236,22 +267,6 @@ class Game < ActiveRecord::Base
     end
     return move
   end
-    
-  def move_count
-    count = 0
-    self.grid.each do |y|
-      y.each do |x|
-        if x.present?
-          count += 1
-        end
-      end
-    end
-    
-    if count == 9 
-      self.winner = "Tie Game!"
-    end
-    return count
-  end
   
   def first_available_space_move
     values = 0,1,2
@@ -265,6 +280,10 @@ class Game < ActiveRecord::Base
         end
       end
     end
+  end
+  
+  def new_game
+    self.grid = [["","",""],["","",""],["","",""]]
   end
   
 end
