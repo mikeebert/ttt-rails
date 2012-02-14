@@ -32,7 +32,13 @@ class Game < ActiveRecord::Base
         self.grid[2][2] = "O"
       else
         if defensive_move == 0
-          if grid[0][0] != "X" && grid[0][0].empty? # covers the other 2 rotations of the "knight" setup
+          #protect against double egde setup
+          if grid[1][2] == "X" && grid[2][1] == "X" 
+            grid[2][2] = "O"
+          #protect against a knight setup
+          elsif grid[0][2] == "X" && grid[2][1] == "X"
+            grid[2][2] = "O"
+          elsif grid[0][0] != "X" && grid[0][0].empty? # covers the other 2 rotations of the "knight" setup, but a "dumb" move if player plays [0][1] & [2][2]
             grid[0][0] = "O"
           elsif grid[0][2].empty?
             grid[0][2] = "O"
